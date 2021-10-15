@@ -1,11 +1,13 @@
 import 'package:azumo_challenge/components/caption2.dart';
 import 'package:azumo_challenge/components/kittieText.dart';
 import 'package:azumo_challenge/components/loading.dart';
-import 'package:azumo_challenge/components/meowButton/meowButton.dart';
 import 'package:azumo_challenge/components/meowButton/meowButton_controller.dart';
+import 'package:azumo_challenge/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'components/meowButton/MeowButtonGif/meowButtonGif.dart';
+import 'components/meowButton/meowButtonImage/meowButtonImage.dart';
 import 'environments.dart';
 
 import 'components/caption1.dart';
@@ -27,17 +29,29 @@ class KittiesApp extends StatelessWidget {
           child: Container(
         margin: EdgeInsets.all(20),
         child: SingleChildScrollView(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Obx(() => _controller.isLoading
-              ? LoadingIndicator()
-              : _controller.showError
-                  ? _getError()
-                  : _controller.cat != null
-                      ? _getImage(getUrlFormated() + _controller.cat!.url!)
-                      : _getCaptions()),
-          _getButton()
-        ])),
+          scrollDirection: Axis.horizontal,
+          child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Obx(() => _controller.isLoading
+                        ? LoadingIndicator()
+                        : _controller.showError
+                            ? _getError()
+                            : _controller.cat != null
+                                ? _getImage(_controller.isImage
+                                    ? Utils.getImageEndpointFormatted(
+                                            caatasUrlImg) +
+                                        _controller.cat!.url!
+                                    : Utils.getGifEndpointFormatted(
+                                            caatasUrlGif) +
+                                        _controller.cat!.url!)
+                                : _getCaptions()),
+                    _getCatImageButton(),
+                    _getCatGifButton()
+                  ])),
+        ),
       )),
     );
   }
@@ -88,12 +102,28 @@ class KittiesApp extends StatelessWidget {
     );
   }
 
-  Widget _getButton() {
+  Widget _getCatImageButton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        MeowButton(
-          onTap: _controller.isLoading ? () => null : _controller.fetchData,
+        MeowButtonImage(
+          onTap:
+              _controller.isLoading ? () => null : _controller.fetchDataImage,
+        )
+      ],
+    );
+  }
+
+  Widget _getCatGifButton() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          child: MeowButtonGif(
+            onTap:
+                _controller.isLoading ? () => null : _controller.fetchDataGif,
+          ),
+          margin: EdgeInsets.symmetric(vertical: 15),
         )
       ],
     );
