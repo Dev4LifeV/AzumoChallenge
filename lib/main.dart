@@ -49,8 +49,8 @@ class KittiesApp extends StatelessWidget {
                                         _controller.cat!.url!)
                                 : _getCaptions()),
                     _getTextField(context),
-                    _getCatImageButton(),
-                    _getCatGifButton()
+                    _getCatImageButton(context),
+                    _getCatGifButton(context)
                   ])),
         ),
       )),
@@ -137,30 +137,44 @@ class KittiesApp extends StatelessWidget {
             )));
   }
 
-  Widget _getCatImageButton() {
+  Widget _getCatImageButton(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         MeowButtonImage(
-          onTap:
-              _controller.isLoading ? () => null : _controller.fetchDataImage,
+          onTap: _controller.isLoading
+              ? () => null
+              : () {
+                  _controller.fetchDataImage();
+                  _unfocusWidget(context);
+                },
         )
       ],
     );
   }
 
-  Widget _getCatGifButton() {
+  Widget _getCatGifButton(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
           child: MeowButtonGif(
-            onTap:
-                _controller.isLoading ? () => null : _controller.fetchDataGif,
+            onTap: _controller.isLoading
+                ? () => null
+                : () {
+                    _controller.fetchDataGif();
+                    _unfocusWidget(context);
+                  },
           ),
           margin: EdgeInsets.symmetric(vertical: 15),
         )
       ],
     );
+  }
+
+  void _unfocusWidget(BuildContext context) {
+    FocusScopeNode focus = FocusScope.of(context);
+    focus.unfocus();
+    FocusScope.of(context).requestFocus(new FocusNode());
   }
 }
