@@ -18,5 +18,5 @@ class HttpAdapter {
 
         return response;
     }
-  }1
+  }
 }

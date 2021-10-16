@@ -19,6 +19,6 @@ class CatGateway implements ICatGateway {
     } catch (err) {
       throw err;
     }
-    return CatModel.fromJson(response.body);
+    return CatModel.fromJson(response.body, response.statusCode);
   }
 }

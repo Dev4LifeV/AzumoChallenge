@@ -1,4 +1,3 @@
-import 'package:azumo_challenge/components/meowButton/meowButtonImage/meowButtonImage_controller.dart';
 import 'package:azumo_challenge/entities/models/cat_model.dart';
 import 'package:azumo_challenge/gateways/cat_gateway.dart';
 import '../../environments.dart';
@@ -8,10 +7,12 @@ import '../../entities/enums/httpAdapterName_enum.dart';
 
 class MeowButtonController extends GetxController {
   final CatGateway _gateway = CatGateway(httpAdapter: HttpAdapterNameEnum.http);
+  final TextEditingController textEditingController = TextEditingController();
   Rx<Color> _onTapColor = Rx<Color>(Color(0xffF06292));
   Rxn<CatModel> _cat = Rxn<CatModel>();
   RxBool _isLoading = RxBool(false);
   RxBool _showError = RxBool(false);
+  RxBool _notFound = RxBool(false);
   RxBool _isGif = RxBool(false);
   RxBool _isImage = RxBool(false);
 
@@ -19,6 +20,7 @@ class MeowButtonController extends GetxController {
   CatModel? get cat => _cat.value;
   bool get isLoading => _isLoading.value;
   bool get showError => _showError.value;
+  bool get notFound => _notFound.value;
   bool get isGif => _isGif.value;
   bool get isImage => _isImage.value;
 
@@ -29,11 +31,16 @@ class MeowButtonController extends GetxController {
   }
 
   void fetchDataImage() async {
+    String url = textEditingController.text.isEmpty
+        ? caatasUrlImg
+        : caatasUrlImgWithTag(textEditingController.text);
+
     try {
       _isImage.value = true;
       _showError.value = false;
       _isLoading.value = true;
-      _cat.value = await _gateway.getRandomCat(caatasUrlImg);
+      _cat.value = await _gateway.getRandomCat(url);
+      _notFound.value = _cat.value!.statusCode == 404 ? true : false;
       _isLoading.value = false;
       _isImage.value = false;
     } catch (err) {
@@ -44,11 +51,16 @@ class MeowButtonController extends GetxController {
   }
 
   void fetchDataGif() async {
+    String url = textEditingController.text.isEmpty
+        ? caatasUrlGif
+        : caatasUrlGifWithTag(textEditingController.text);
+
     try {
       _isGif.value = true;
       _showError.value = false;
       _isLoading.value = true;
-      _cat.value = await _gateway.getRandomCat(caatasUrlGif);
+      _cat.value = await _gateway.getRandomCat(url);
+      _notFound.value = _cat.value!.statusCode == 404 ? true : false;
       _isLoading.value = false;
       _isGif.value = false;
     } catch (err) {

@@ -3,24 +3,24 @@ import 'dart:convert';
 class CatModel {
   String? _id;
   String? _url;
-  String? _tag;
+  int _statusCode;
 
-  CatModel({required String id, required String url, String tag = ''})
+  CatModel({required String id, required String url, required int statusCode})
       : this._id = id,
         this._url = url,
-        this._tag = tag;
+        this._statusCode = statusCode;
 
-  factory CatModel.fromJson(String response) {
+  factory CatModel.fromJson(String response, int statusCode) {
     Map<String, dynamic> data = json.decode(response);
 
     String _id = data["id"];
     String _url = data["url"];
-    String _tag = data["tag"] != null ? data["tag"] : '';
+    int _statusCode = statusCode;
 
-    return CatModel(id: _id, url: _url, tag: _tag);
+    return CatModel(id: _id, url: _url, statusCode: _statusCode);
   }
 
   String? get id => this._id;
   String? get url => this._url;
-  String? get tag => this._tag;
+  int get statusCode => this._statusCode;
 }
