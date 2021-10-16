@@ -142,13 +142,8 @@ class KittiesApp extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         MeowButtonImage(
-          onTap: _controller.isLoading
-              ? () => null
-              : () {
-                  _controller.fetchDataImage();
-                  _unfocusWidget(context);
-                },
-        )
+            onTap:
+                _controller.isLoading ? () => null : _controller.fetchDataImage)
       ],
     );
   }
@@ -159,20 +154,12 @@ class KittiesApp extends StatelessWidget {
       children: [
         Container(
           child: MeowButtonGif(
-            onTap: _controller.isLoading
-                ? () => null
-                : () {
-                    _controller.fetchDataGif();
-                    _unfocusWidget(context);
-                  },
-          ),
+              onTap: _controller.isLoading
+                  ? () => null
+                  : _controller.fetchDataGif),
           margin: EdgeInsets.symmetric(vertical: 15),
         )
       ],
     );
-  }
-
-  void _unfocusWidget(BuildContext context) {
-    FocusScope.of(context).requestFocus(new FocusNode());
   }
 }
