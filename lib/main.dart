@@ -124,7 +124,6 @@ class KittiesApp extends StatelessWidget {
                 textSelectionTheme:
                     TextSelectionThemeData(selectionColor: Color(0xff98EFDA))),
             child: TextFormField(
-              textInputAction: TextInputAction.next,
               controller: _controller.textEditingController,
               decoration: InputDecoration(
                 hintText: MediaQuery.of(context).size.width <= 768
