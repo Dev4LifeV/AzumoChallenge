@@ -173,8 +173,6 @@ class KittiesApp extends StatelessWidget {
   }
 
   void _unfocusWidget(BuildContext context) {
-    FocusScopeNode focus = FocusScope.of(context);
-    focus.unfocus();
     FocusScope.of(context).requestFocus(new FocusNode());
   }
 }
