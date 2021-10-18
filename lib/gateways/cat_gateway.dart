@@ -12,7 +12,7 @@ class CatGateway implements ICatGateway {
       : this._httpAdapter = httpAdapter;
 
   @override
-  Future<CatModel> getRandomCat(String url, {String? tag}) async {
+  Future<CatModel> getRandomCat(String url) async {
     late http.Response response;
     try {
       response = await this._httpClient.get(this._httpAdapter, url);
