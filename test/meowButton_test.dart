@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 
 void main() {
-  group('', () {
+  group('Check whether the buttons have been found or not', () {
     testWidgets('Should find a MeowButtonImage using a key and tap it',
         (WidgetTester tester) async {
       final MeowButtonController _controller = Get.put(MeowButtonController());
